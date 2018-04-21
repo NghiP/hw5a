@@ -12,28 +12,31 @@ class Movie extends Component {
     componentDidMount() {
         const {dispatch} = this.props;
         if (this.props.selectedMovie == null)
-            dispatch(fetchMovie(this.props.movieId));
+            dispatch(fetchMovie(this.props.movieTitle));
     }
 
     render() {
-        const ActorInfo = ({actors}) => {
+        const ActorInfo = ({actors=[]}) => {
             return actors.map((actor, i) =>
                 <p key={i}>
-                    <b>{actor.actorName}</b> {actor.characterName}
+                    <b>{actor.ActorName}</b> {actor.CharacterName}
+                    <b>{actor.reviewer }</b>{actor.rating}
+                    {actor.quote} <b>{actor.reviewer1 }</b> {actor.rating1} {actor.quote1}
+
                 </p>
             );
         };
 
-        const ReviewInfo = ({reviews}) => {
+        const ReviewInfo = ({reviews=[]}) => {
             return reviews.map((review, i) =>
                 <p key={i}>
-                <b>{review.username}</b> {review.review}
-                    <Glyphicon glyph={'star'} /> {review.rating}
+                <b>{reviews.reviewer}</b> {reviews.reviews}
+                    /*<Glyphicon glyph={'star'} /> {reviews.rating}*/
                 </p>
             );
         }
 
-        const DetailInfo = ({currentMovie}) => {
+        const DetailInfo = ({currentMovie=[]}) => {
             if (!currentMovie) { // evaluates to true if currentMovie is null
                 return <div>Loading...</div>;
             }
@@ -43,8 +46,9 @@ class Movie extends Component {
                     <Panel.Body><Image className="image" src={currentMovie.imageUrl} thumbnail /></Panel.Body>
                     <ListGroup>
                         <ListGroupItem>{currentMovie.title}</ListGroupItem>
-                        <ListGroupItem><ActorInfo actors={currentMovie.actors} /></ListGroupItem>
                         <ListGroupItem><h4><Glyphicon glyph={'star'} /> {currentMovie.avgRating} </h4></ListGroupItem>
+                        <ListGroupItem><ActorInfo actors={currentMovie.actors} /></ListGroupItem>
+
                     </ListGroup>
                     <Panel.Body><ReviewInfo reviews={currentMovie.reviews} /></Panel.Body>
                 </Panel>
